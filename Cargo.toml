@@ -1,0 +1,39 @@
+[package]
+name = "token-tax"
+version = "0.1.0"
+edition = "2021"
+# The floor is set by the dependency tree, not this crate's own code: `darling`
+# (via ratatui) and `icu_*` (via url/idna, via reqwest) require 1.88. Verified by
+# building with `cargo +1.88.0 build`.
+rust-version = "1.88"
+description = "Pre-flight cost calculator for LLM agents: reads a prompt on stdin and prices it against live OpenRouter rates."
+license = "MIT"
+readme = "README.md"
+keywords = ["llm", "tokens", "cost", "cli", "openrouter"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "token-tax"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+crossterm = "0.28"
+parking_lot = "0.12"
+ratatui = "0.28"
+# Restores the terminal when a signal (SIGTERM/SIGHUP) would otherwise kill the
+# process while the alternate screen is active.
+signal-hook = "0.3"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tiktoken-rs = "0.5"
+tokio = { version = "1", features = ["rt", "macros"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true
+panic = "unwind"
