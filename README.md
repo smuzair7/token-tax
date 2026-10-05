@@ -60,10 +60,11 @@ directly, and the typo path is gated on length ratio. Queries shorter than three
 characters get no suggestions at all; they are contained in too much of the
 catalog to carry intent.
 
-**Two renderers, chosen automatically.** On a TTY you get a full-screen
-`ratatui` table held until `q`, `Esc`, or `Ctrl+C`. When stdout is redirected it
-prints a plain ANSI table and exits, so `token-tax > report.txt` and
-`| less` behave. Colour is suppressed when `NO_COLOR` is set.
+**Two renderers, chosen automatically.** On a capable TTY you get a full-screen
+`ratatui` table held until `q`, `Esc`, or `Ctrl+C`. When stdout is redirected,
+or `TERM` is `dumb`/unset, or another program already owns raw mode, it prints a
+plain ANSI table and exits instead — so `token-tax > report.txt`, `| less`, and
+CI logs all behave. Colour is suppressed when `NO_COLOR` is set.
 
 **The bar column is width-dependent.** Fixed columns plus the model name fit an
 80-column terminal exactly; the bar appears only when there is surplus width, and
@@ -133,12 +134,16 @@ cargo test                      # unit tests, no network required
 cargo clippy --all-targets -- -D warnings
 cargo fmt --check
 cargo build --release
+cargo install --path .          # or: cargo install --git <url>
 ```
 
 Tests cover price parsing (malformed, null, bare-number, sentinel values), cost
 arithmetic, encoding resolution, fuzzy-match ranking, CLI defaults, number
-formatting collisions, and both renderers at terminal sizes from 20 to 300
-columns.
+formatting collisions, terminal capability probing, and both renderers at
+terminal sizes from 20 to 300 columns.
+
+MSRV is **1.88**, set by the dependency tree (`darling` via ratatui, `icu_*` via
+reqwest) rather than by this crate's own code. `cargo +1.88.0 build` verifies it.
 
 ## License
 

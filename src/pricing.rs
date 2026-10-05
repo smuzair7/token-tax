@@ -334,7 +334,7 @@ fn similarity(query: &str, id: &str) -> Option<f64> {
         let at_boundary = i[..i.find(&q).unwrap_or(0)]
             .chars()
             .next_back()
-            .map_or(true, |c| c == '/' || c == '-');
+            .is_none_or(|c| c == '/' || c == '-');
         if at_boundary {
             score += 0.01;
         }

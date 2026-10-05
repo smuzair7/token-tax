@@ -41,7 +41,7 @@ impl<'a> TableData<'a> {
         let mut best: Option<(usize, f64)> = None;
         for (i, row) in self.rows.iter().enumerate() {
             if let Some(total) = self.total_for(row) {
-                if best.map_or(true, |(_, b)| total < b) {
+                if best.is_none_or(|(_, b)| total < b) {
                     best = Some((i, total));
                 }
             }
