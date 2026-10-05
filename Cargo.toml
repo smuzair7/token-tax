@@ -9,8 +9,11 @@ rust-version = "1.88"
 description = "Pre-flight cost calculator for LLM agents: reads a prompt on stdin and prices it against live OpenRouter rates."
 license = "MIT"
 readme = "README.md"
-keywords = ["llm", "tokens", "cost", "cli", "openrouter"]
-categories = ["command-line-utilities"]
+repository = "https://github.com/smuzair7/token-tax"
+homepage = "https://github.com/smuzair7/token-tax"
+documentation = "https://github.com/smuzair7/token-tax#readme"
+keywords = ["llm", "tokens", "cost", "cli", "openrouter", "tui"]
+categories = ["command-line-utilities", "command-line-interface"]
 
 [[bin]]
 name = "token-tax"
